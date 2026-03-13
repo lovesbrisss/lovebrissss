@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My universe</title>
+  <style>
+    /* --- ESTILOS GENERALES --- */
+    html, body, canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      position: fixed;
+      background: black;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+    }
+
+    #canvas {
+      display: block;
+      z-index: 1;
+    }
+
+    /* --- MENSAJE ESTELAR --- */
+    #loveMessage {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 3rem;
+      color: #ff69b4;
+      font-family: 'Arial', sans-serif;
+      text-shadow: 0 0 10px #ff69b4, 0 0 20px #ff1493;
+      pointer-events: none;
+      animation: floatBreeze 5s ease-in-out infinite alternate;
+      z-index: 5;
+      text-align: center;
+    }
+
+    @keyframes floatBreeze {
+      0% { transform: translateX(-50%) translateY(0px) rotate(-2deg); }
+      50% { transform: translateX(-50%) translateY(-20px) rotate(2deg); }
+      100% { transform: translateX(-50%) translateY(0px) rotate(-2deg); }
+    }
+
+    /* --- BOTÓN ROMÁNTICO FLOTEANTE --- */
+    #nextPageBtn {
+      position: fixed;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1em 2em;
+      font-size: 1.4rem;
+      font-family: 'Cursive', Arial, sans-serif;
+      color: white;
+      background: linear-gradient(45deg, #ff0080, #ff69b4, #ff8c00);
+      border: none;
+      border-radius: 20px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff0080, 0 0 25px #ff8c00, 0 0 40px #ff69b4;
+      z-index: 10; /* siempre encima del canvas */
+      animation: floatButton 3s ease-in-out infinite;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    #nextPageBtn:hover {
+      transform: translateX(-50%) scale(1.1);
+      box-shadow: 0 0 25px #ff0080, 0 0 40px #ff69b4, 0 0 60px #ff8c00;
+    }
+
+    @keyframes floatButton {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(-12px); }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- MENSAJE Y BOTÓN -->
+  <div id="loveMessage">💖 Te amo Briss 💖</div>
+  <button id="nextPageBtn">Ir al siguiente capítulo</button>
+
+  <canvas id="canvas"></canvas>
+
+  <script type="module" src="script.js"></script>
+  <script>
+    // BOTÓN DE NAVEGACIÓN
+    const nextBtn = document.getElementById('nextPageBtn');
+    nextBtn.addEventListener('click', () => {
+      window.location.href = "love.html.html"; // Cambia por tu HTML de destino
+    });
+  </script>
+
+</body>
+</html>

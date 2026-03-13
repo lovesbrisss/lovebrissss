@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>brisa love</title>
+    <link rel="stylesheet" href="nigga.css">
+
+  
+    
+    <style>
+        .overlay-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+        body {
+            background-color: #000000;
+        }
+    </style>
+</head>
+    
+<body>
+    <div class="experience"></div>
+    <canvas class="overlay-canvas"></canvas>
+    <h1 class="text">brisa te amoooooo!!!!!!!!!!!!1</h1>
+    
+    <script src="scripttt.js"></script>
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
+                "FontLoader": "https://unpkg.com/three@0.157.0/examples/jsm/loaders/FontLoader.js",
+                "TextGeometry": "https://unpkg.com/three@0.157.0/examples/jsm/geometries/TextGeometry.js"
+            }
+        }
+    </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { FontLoader } from 'FontLoader';
+    import { TextGeometry } from 'TextGeometry';
+
+    window.addEventListener('load', () => {
+        if (!window.experience || !window.experience.camera?.instance) {
+            const errorMsg = "ERROR CRÍTICO: 'window.experience' o la cámara no se encontraron. Revisa que 'script.js' se cargue correctamente y cree este objeto.";
+            console.error(errorMsg);
+            alert(errorMsg);
+            return;
+        }
+
+        const originalCamera = window.experience.camera.instance;
+        const overlayCanvas = document.querySelector('.overlay-canvas');
+        
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+        const starsScene = new THREE.Scene();
+        const starsCamera = new THREE.OrthographicCamera(-window.innerWidth / 2, window.innerWidth / 2, window.innerHeight / 2, -window.innerHeight / 2, 1, 1000);
+        starsCamera.position.z = 10;
+        
+        const renderer = new THREE.WebGLRenderer({
+            canvas: overlayCanvas,
+            alpha: true,
+            antialias: true
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.autoClear = false;
+
+        const orbitingObjects = [];
+        const textureLoader = new THREE.TextureLoader();
+
+        function createOrbitingObject(object, isText, radius, speed) {
+            const group = new THREE.Group();
+            object.position.x = radius;
+            group.add(object);
+            group.rotation.x = (Math.random() - 0.5) * 0.5;
+            group.rotation.z = (Math.random() - 0.5) * 0.5;
+            scene.add(group);
+            
+            const randomOffset = Math.random() * 10;
+            orbitingObjects.push({ group, object, isText, speed, randomOffset });
+        }
+
+        const fontLoader = new FontLoader();
+        fontLoader.load('https://unpkg.com/three@0.157.0/examples/fonts/helvetiker_regular.typeface.json', (font) => {
+            const texts = [
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo',
+                'Te Amo', 'My Love', 'Amor de mi Vida', 'Para Siempre', 'Me encantas','brisa te amo', 'Eres Mi Todo'
+            ];
+            const baseTextMaterial = new THREE.MeshBasicMaterial({ color: 0xffaaff, side: THREE.DoubleSide, transparent: true });
+            
+            texts.forEach((text, i) => {
+                const geom = new TextGeometry(text, { font, size: 0.15, height: 0.02 });
+                geom.center();
+                const mesh = new THREE.Mesh(geom, baseTextMaterial.clone());
+                const speed = -(Math.random() * 0.3 + 0.2);
+                const radius = 2.2 + i * 0.15;
+                createOrbitingObject(mesh, true, radius, speed);
+            });
+        });
+
+        // --- IMÁGENES ---
+const imageUrls = [
+    'Screenshot_20260312-170448.Fotos.png',
+    'Screenshot_20260312-170509.Fotos.png',
+    'Screenshot_20260312-170523.Fotos.png',
+    'Screenshot_20260312-170543.Fotos.png',
+    'Screenshot_20260312-170610.Fotos.png',
+    'Screenshot_20260312-170623.Fotos.png',
+    'Screenshot_20260312-170638.Fotos.png',
+    'WhatsApp Image 2026-03-12 at 3.28.02 PM.jpeg'
+];
+
+        imageUrls.forEach((url, i) => {
+            if (!url) return;
+            textureLoader.load(url, (texture) => {
+                const mat = new THREE.SpriteMaterial({ map: texture });
+                const sprite = new THREE.Sprite(mat);
+                sprite.scale.set(0.8, 0.8, 1.0);
+                const speed = -(Math.random() * 0.2 + 0.1);
+                const radius = 2.5 + i * 0.4;
+                createOrbitingObject(sprite, false, radius, speed);
+            }, undefined, () => console.error(`Error al cargar la imagen: ${url}`));
+        });
+        
+        const shootingStars = [];
+        const starGeo = new THREE.PlaneGeometry(200, 5);
+        const starMat = new THREE.ShaderMaterial({
+            uniforms: {
+                uTime: { value: 0.0 },
+                uColor: { value: new THREE.Color(0xffeebb) }
+            },
+            vertexShader: `
+                varying vec2 vUv;
+                void main() {
+                    vUv = uv;
+                    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+                }
+            `,
+            fragmentShader: `
+                varying vec2 vUv;
+                uniform float uTime;
+                uniform vec3 uColor;
+                void main() {
+                    float tailAlpha = pow(vUv.x, 3.0);
+                    float headAlpha = pow(max(0.0, vUv.x - 0.9) * 10.0, 2.0);
+                    float flicker = 0.7 + sin(uTime * 20.0 + vUv.x * 20.0) * 0.3;
+                    float finalAlpha = (tailAlpha + headAlpha) * flicker;
+                    gl_FragColor = vec4(uColor, finalAlpha);
+                }
+            `,
+            transparent: true,
+            blending: THREE.AdditiveBlending,
+            depthTest: false
+        });
+
+        for (let i = 0; i < 20; i++) {
+            const star = new THREE.Mesh(starGeo, starMat);
+            star.position.set(9999, 9999, 2);
+            starsScene.add(star);
+            shootingStars.push({ 
+                mesh: star, 
+                velocity: new THREE.Vector3(0, 0, 0) 
+            });
+        }
+
+        function launchShootingStar() {
+            const star = shootingStars.find(s => s.velocity.x === 0);
+            if (star) {
+                const screenW = window.innerWidth / 2;
+                const screenH = window.innerHeight / 2;
+                star.mesh.position.set(
+                    screenW + Math.random() * 200,
+                    (Math.random() * 2 - 1) * screenH,
+                    2
+                );
+                star.velocity.set(
+                    -(Math.random() * 8 + 12),
+                    -(Math.random() * 4 + 6),
+                    0
+                );
+                const angle = Math.atan2(star.velocity.y, star.velocity.x);
+                star.mesh.rotation.z = angle;
+            }
+            const randomDelay = Math.random() * 3000 + 500;
+            setTimeout(launchShootingStar, randomDelay);
+        }
+
+        const clock = new THREE.Clock();
+        const tick = () => {
+            const elapsedTime = clock.getElapsedTime();
+            
+            starMat.uniforms.uTime.value = elapsedTime;
+
+            if (originalCamera) {
+                camera.copy(originalCamera);
+            }
+            
+            orbitingObjects.forEach(obj => {
+                obj.group.rotation.y = elapsedTime * obj.speed;
+                if (obj.isText) {
+                    obj.object.lookAt(camera.position);
+                    const twinkle = (Math.sin(elapsedTime * 3 + obj.randomOffset) + 1) / 2;
+                    obj.object.material.opacity = 0.5 + twinkle * 0.5;
+                }
+            });
+
+            const screenW = window.innerWidth / 2;
+            const screenH = window.innerHeight / 2;
+            shootingStars.forEach(star => {
+                if (star.velocity.x !== 0) {
+                    star.mesh.position.add(star.velocity);
+                    if (star.mesh.position.x < -screenW - 200 || star.mesh.position.y < -screenH - 200) {
+                        star.velocity.set(0, 0, 0);
+                        star.mesh.position.set(9999, 9999, 2);
+                    }
+                }
+            });
+
+            renderer.clear();
+            renderer.render(scene, camera);
+            renderer.clearDepth();
+            renderer.render(starsScene, starsCamera);
+
+            window.requestAnimationFrame(tick);
+        }
+        
+        launchShootingStar();
+        tick();
+
+        window.addEventListener('resize', () => {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            starsCamera.left = -width / 2;
+            starsCamera.right = width / 2;
+            starsCamera.top = height / 2;
+            starsCamera.bottom = -height / 2;
+            starsCamera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+    });
+</script>
+
+<a href="flores.html" class="btn-romantico">Siguiente ❤️</a>
+
+
+</body>
+
+
+</html>

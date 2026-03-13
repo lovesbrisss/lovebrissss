@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Un Te Amo No Es Suficiente</title>
+
+<style>
+
+body{
+margin:0;
+overflow:hidden;
+background:radial-gradient(circle,#000000,#140018);
+font-family:Arial;
+color:white;
+}
+
+/* TITULO */
+
+.titulo{
+position:fixed;
+top:20px;
+width:100%;
+text-align:center;
+font-size:42px;
+text-shadow:0 0 25px #ff4d6d;
+z-index:10;
+}
+
+/* MATRIX */
+
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:1;
+pointer-events:none;
+}
+
+/* ESTRELLAS */
+
+.estrella{
+position:fixed;
+width:2px;
+height:2px;
+background:white;
+animation:brillar 2s infinite alternate;
+z-index:2;
+}
+
+@keyframes brillar{
+from{opacity:0.2;}
+to{opacity:1;}
+}
+
+/* FOTOS */
+
+.foto{
+position:absolute;
+width:130px;
+height:130px;
+border-radius:50%;
+overflow:hidden;
+box-shadow:0 0 25px #ff4d6d;
+animation:flotar 8s infinite ease-in-out;
+cursor:pointer;
+transition:0.4s;
+z-index:5;
+}
+
+.foto:hover{
+transform:scale(1.15);
+box-shadow:0 0 45px pink;
+}
+
+.foto img{
+width:100%;
+height:100%;
+object-fit:cover;
+}
+
+@keyframes flotar{
+0%{transform:translateY(0)}
+50%{transform:translateY(-25px)}
+100%{transform:translateY(0)}
+}
+
+/* MENSAJES */
+
+.mensaje{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.9);
+padding:40px;
+border-radius:20px;
+max-width:650px;
+line-height:1.6;
+display:none;
+z-index:20;
+box-shadow:0 0 40px #ff4d6d;
+font-size:18px;
+overflow:auto;
+max-height:80vh;
+}
+
+.cerrar{
+position:absolute;
+top:10px;
+right:15px;
+cursor:pointer;
+font-size:22px;
+}
+
+/* CAJA CLAVE */
+
+.caja{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+background:rgba(0,0,0,0.95);
+padding:40px;
+border-radius:20px;
+display:none;
+z-index:30;
+text-align:center;
+box-shadow:0 0 40px pink;
+}
+
+input{
+padding:10px;
+border:none;
+border-radius:10px;
+}
+
+button{
+padding:10px 20px;
+border:none;
+border-radius:10px;
+background:#ff4d6d;
+color:white;
+cursor:pointer;
+}
+
+/* TRANSICION */
+
+.fade{
+animation:fade 2s;
+}
+
+@keyframes fade{
+from{opacity:0}
+to{opacity:1}
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="titulo">Un Te Amo No Es Suficiente ❤️</div>
+
+<canvas id="matrix"></canvas>
+
+<div class="mensaje" id="mensaje">
+<span class="cerrar" onclick="cerrar()">✖</span>
+<p id="texto"></p>
+</div>
+
+<div class="caja" id="claveBox">
+
+<h3>💌 Mensaje secreto</h3>
+<p>Ingresa la clave</p>
+
+<input id="clave">
+
+<br><br>
+
+<button onclick="abrir()">Abrir</button>
+
+<p id="contador"></p>
+
+</div>
+
+<!-- MUSICA -->
+
+<audio id="musica" src="SIN TI YO NO ME SIENTO BIEN.mp3"></audio>
+
+<!-- FOTOS -->
+
+<div class="foto" style="top:20%;left:10%" onclick="msg(1)">
+<img src="WhatsApp Image 2026-03-12 at 3.28.02 PM (2).jpeg">
+</div>
+
+<div class="foto" style="top:60%;left:20%" onclick="msg(2)">
+<img src="Screenshot_20260312-170431.Fotos.png">
+</div>
+
+<div class="foto" style="top:30%;left:40%" onclick="msg(3)">
+<img src="Screenshot_20260312-170448.Fotos.png">
+</div>
+
+<div class="foto" style="top:70%;left:50%" onclick="msg(4)">
+<img src="Screenshot_20260312-170509.Fotos.png">
+</div>
+
+<div class="foto" style="top:40%;left:70%" onclick="msg(5)">
+<img src="Screenshot_20260312-170543.Fotos.png">
+</div>
+
+<div class="foto" style="top:20%;left:80%" onclick="msg(6)">
+<img src="Screenshot_20260312-170623.Fotos.png">
+</div>
+
+<div class="foto" style="top:70%;left:80%" onclick="secreto()">
+<img src="Screenshot_20260312-170610.Fotos.png">
+</div>
+
+<script>
+
+/* MATRIX */
+
+const canvas=document.getElementById("matrix")
+const ctx=canvas.getContext("2d")
+
+canvas.height=window.innerHeight
+canvas.width=window.innerWidth
+
+const letras="TE AMO ❤️ ".split("")
+const size=18
+const columnas=canvas.width/size
+const gotas=[]
+
+for(let i=0;i<columnas;i++) gotas[i]=1
+
+function draw(){
+
+ctx.fillStyle="rgba(0,0,0,0.05)"
+ctx.fillRect(0,0,canvas.width,canvas.height)
+
+ctx.fillStyle="#ff4d6d"
+ctx.font=size+"px monospace"
+
+for(let i=0;i<gotas.length;i++){
+
+let letra=letras[Math.floor(Math.random()*letras.length)]
+
+ctx.fillText(letra,i*size,gotas[i]*size)
+
+if(gotas[i]*size>canvas.height && Math.random()>0.975)
+gotas[i]=0
+
+gotas[i]++
+
+}
+
+}
+
+setInterval(draw,40)
+
+/* ESTRELLAS */
+
+for(let i=0;i<120;i++){
+
+let s=document.createElement("div")
+s.className="estrella"
+
+s.style.left=Math.random()*window.innerWidth+"px"
+s.style.top=Math.random()*window.innerHeight+"px"
+
+document.body.appendChild(s)
+
+}
+
+/* MENSAJES DE FOTOS */
+
+const textos=[
+
+"",
+"Desde que llegaste a mi vida algo dentro de mí cambió.",
+"A veces pienso en lo increíble que eres y en lo mucho que significas para mí.",
+"No eres perfecta… pero eres perfecta para mi corazón.",
+"Si tuviera que elegir otra vez… siempre te elegiría.",
+"Eres una parte muy importante de mi vida.",
+"Tu sonrisa tiene la capacidad de calmar mis pensamientos."
+
+]
+
+function msg(n){
+
+document.getElementById("texto").innerText=textos[n]
+document.getElementById("mensaje").style.display="block"
+
+}
+
+function cerrar(){
+
+document.getElementById("mensaje").style.display="none"
+
+}
+
+/* FOTO SECRETA */
+
+function secreto(){
+
+document.getElementById("claveBox").style.display="block"
+
+}
+
+/* CLAVE */
+
+function abrir(){
+
+let clave=document.getElementById("clave").value
+
+if(clave==="Miedo"){
+
+let c=3
+
+let contador=setInterval(()=>{
+
+document.getElementById("contador").innerText="Revelando en "+c
+
+c--
+
+if(c<0){
+
+clearInterval(contador)
+
+document.getElementById("claveBox").style.display="none"
+
+/* MUSICA SUAVE */
+
+let musica=document.getElementById("musica")
+musica.volume=0.25
+musica.play()
+
+/* MENSAJE SECRETO */
+
+document.getElementById("texto").innerText=`
+
+A veces no sé si lo que me dices es verdad o si solo intentas no lastimarme.
+A veces me quedo pensando en por qué de repente puedes ser tan fría conmigo.
+
+Antes sentía que eras más sincera conmigo… y ahora muchas veces me quedo con dudas que no sé cómo explicar.
+
+No sé si realmente me amas igual que antes,
+o si algo cambió y simplemente no sabes cómo decirlo.
+
+Hay noches en las que me quedo pensando en todo.
+En si estoy imaginando cosas o si algo realmente cambió entre nosotros.
+
+Muchas veces sufro en silencio.
+Porque me da miedo decir lo que siento.
+
+Miedo a que pienses que soy débil.
+Miedo a que te burles de mis inseguridades.
+
+A veces incluso escribiendo esto siento que podría llorar.
+
+No porque quiera hacerte sentir mal,
+sino porque ser sincero a veces pesa demasiado.
+
+También hay muchas cosas que no digo.
+
+No porque no confíe en ti…
+sino porque tengo miedo de que si digo todo lo que pienso,
+tal vez empieces a ocultar cosas para que yo no sobrepiense.
+
+Y eso también duele.
+
+Porque cuando siento que algo se oculta,
+mi mente empieza a llenar el silencio con dudas.
+
+Y esas dudas a veces hacen más daño que la verdad.
+
+También tengo miedos que casi nunca digo.
+
+El miedo de no ser suficiente.
+
+El miedo de que algún día llegue alguien mejor que yo.
+
+Alguien más guapo.
+Alguien que hable más bonito.
+Alguien que pueda darte todo lo que tal vez yo no puedo darte.
+
+Y aun así…
+
+si algún día la verdad es diferente,
+si tu corazón cambió,
+si ya no sientes lo mismo,
+o incluso si hay alguien más…
+
+prefiero que me digas la verdad.
+
+Aunque duela.
+
+Prefiero una verdad que rompa mi corazón una vez
+a vivir con dudas que rompan mi alma todos los días.
+
+Porque algo que sí sé con certeza
+es que yo te amo de verdad.
+
+Y aun con miedo…
+
+yo te sigo eligiendo a ti.
+
+`
+
+document.getElementById("mensaje").classList.add("fade")
+document.getElementById("mensaje").style.display="block"
+
+}
+
+},1000)
+
+}
+
+}
+
+/* PARTICULAS */
+
+document.addEventListener("mousemove",e=>{
+
+for(let i=0;i<3;i++){
+
+let p=document.createElement("div")
+
+p.style.position="fixed"
+p.style.left=e.clientX+"px"
+p.style.top=e.clientY+"px"
+p.style.width="4px"
+p.style.height="4px"
+p.style.background="pink"
+p.style.borderRadius="50%"
+
+document.body.appendChild(p)
+
+let x=(Math.random()-0.5)*100
+let y=(Math.random()-0.5)*100
+
+p.animate([
+{transform:"translate(0,0)",opacity:1},
+{transform:`translate(${x}px,${y}px)`,opacity:0}
+],{duration:900})
+
+setTimeout(()=>p.remove(),900)
+
+}
+
+})
+
+</script>
+
+<!-- Botón romántico que lleva a latidos.html -->
+<a href="latidos.html" class="boton-latidos">💓</a>
+
+<style>
+.boton-latidos{
+  position: fixed;
+  bottom: 20px;      /* distancia desde abajo */
+  right: 20px;       /* distancia desde la derecha */
+  background: linear-gradient(45deg,#ff4d6d,#ff8fab);
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+  padding: 15px 18px;
+  border-radius: 50%;
+  box-shadow: 0 0 15px rgba(255,0,100,0.6);
+  transition: 0.3s;
+  z-index: 999;
+}
+
+.boton-latidos:hover{
+  transform: scale(1.15);
+  box-shadow: 0 0 25px rgba(255,0,100,0.9);
+}
+</style>
+
+
+
+</body>
+</html>

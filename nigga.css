@@ -1,0 +1,65 @@
+*
+{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body
+{
+    overflow: hidden;
+    cursor: url('comet.png'), auto;
+}
+
+.experience
+{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+}
+
+.text{
+  color: Blue;
+}
+
+
+.overlay-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 10;
+}
+/* BOTON ROMANTICO */
+
+.btn-romantico{
+position:fixed;
+bottom:40px;
+right:40px;
+padding:15px 30px;
+font-size:18px;
+color:white;
+text-decoration:none;
+background:linear-gradient(45deg,#ff0080,#ff4da6,#ff99cc);
+border-radius:50px;
+box-shadow:0 0 20px #ff4da6,0 0 40px #ff0080;
+font-weight:bold;
+z-index:999;
+transition:all 0.3s ease;
+animation:latido 1.5s infinite;
+}
+
+.btn-romantico:hover{
+transform:scale(1.15);
+box-shadow:0 0 30px #ff4da6,0 0 60px #ff0080;
+}
+
+/* animación de latido */
+@keyframes latido{
+0%{transform:scale(1);}
+50%{transform:scale(1.08);}
+100%{transform:scale(1);}
+}

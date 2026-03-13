@@ -1,0 +1,188 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #111;
+  min-height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+body:after {
+  background: radial-gradient(transparent, #111);
+  bottom: 0;
+  content: '';
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  pointer-events: none;
+}
+
+.grid {
+  filter: blur(2px);
+}
+
+.grid:before {
+  background: repeating-linear-gradient(0deg, #ff3860 0, #ff3860 2px, transparent 2px, transparent 40px), repeating-linear-gradient(90deg, #ff3860 0, #ff3860 2px, transparent 2px, transparent 40px);
+  content: '';
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  width: 100vw;
+  opacity: 0.2;
+}
+
+.text-container {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  top: 20%; 
+  z-index: 10;
+  pointer-events: none;
+}
+
+h1 {
+  font-size: 4.2rem;
+  color: #ff3860;
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  text-shadow: 0 0 10px #ff3860, 0 0 20px #ff3860;
+  margin: 0;
+  transition: opacity 0.5s ease;
+}
+
+.date {
+  display: inline-block;
+  margin-top: 15px;
+  font-size: 1.2rem;
+  color: #fff; 
+  background-color: rgba(255, 56, 96, 0.1);
+  padding: 5px 15px;
+  border: 1px solid #ff3860; 
+  border-radius: 4px;
+  box-shadow: 0 0 5px #ff3860, inset 0 0 5px #ff3860; 
+  letter-spacing: 3px;
+  font-weight: bold;
+}
+
+.text-love { display: none; }
+.text-normal { display: block; }
+
+input:checked ~ .text-container .text-normal { display: none; }
+input:checked ~ .text-container .text-love { display: block; }
+/* ------------------------ */
+
+.ekg {
+  left: 50%;
+  max-width: 600px;
+  position: absolute;
+  top: 55%;
+  transform: translate(-50%, -50%);
+}
+
+.ekg:nth-of-type(1),
+.ekg:nth-of-type(3) {
+  filter: blur(10px);
+}
+
+@media (min-width: 768px) {
+  .ekg {
+    max-width: 500px;
+  }
+}
+
+.ekg path {
+  -webkit-animation: draw 1s infinite ease-out forwards;
+  animation: draw 1s infinite ease-out forwards;
+  stroke: #ff3860;
+}
+
+.ekg--novelty {
+  display: none;
+}
+
+.ekg--novelty path {
+  -webkit-animation-duration: 1.2s;
+  animation-duration: 1.2s;
+}
+
+label {
+  align-items: center;
+  bottom: 20px;
+  cursor: pointer;
+  display: flex;
+  height: 50px;
+  justify-content: center;
+  position: fixed;
+  right: 50px;
+  width: 50px;
+  z-index: 20;
+  font-size: 2rem;
+  filter: drop-shadow(0 0 5px #ff3860);
+}
+
+input {
+  cursor: pointer;
+  margin: 4px;
+  position: fixed;
+  bottom: 36px;
+  right: 40px;
+  z-index: 20;
+  opacity: 0;
+}
+
+input:checked ~ .ekg--original {
+  display: none;
+}
+
+input:checked ~ .ekg--novelty {
+  display: block;
+}
+
+@-webkit-keyframes draw {
+  75% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes draw {
+  75% {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+  100% {
+    opacity: 0;
+    stroke-dashoffset: 0;
+  }
+}
+
+.btn-romantico{
+  position: fixed;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 28px;
+  background: linear-gradient(45deg,#ff4b6e,#ff7aa2);
+  color: white;
+  font-size: 18px;
+  text-decoration: none;
+  border-radius: 30px;
+  box-shadow: 0 0 15px rgba(255,75,110,0.6);
+  transition: 0.3s;
+  font-family: sans-serif;
+
+  z-index: 9999;   /* 👈 esto lo pone encima de todo */
+  pointer-events: auto;
+}
+
+.grid{
+  pointer-events: none;
+}
