@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Un Vals Eterno para los dos</title>
+<style>
+
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden; /* Evita barras de desplazamiento */
+        background-color: #000; /* Fondo negro profundo antes de que cargue */
+        font-family: 'Georgia', serif; /* Fuente elegante y clásica */
+        color: white;
+    }
+
+    #escena-principal {
+        position: relative;
+        width: 100%;
+        height: 100vh;
+        /* Degradado de cielo nocturno romántico */
+        background: linear-gradient(to bottom, #020111 10%, #191970 100%);
+        overflow: hidden;
+    }
+
+ 
+    #lago {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 40vh; /* El lago ocupa el 40% inferior */
+        /* Color del agua con toque mágico */
+        background: linear-gradient(to bottom, #112244 0%, #001122 100%);
+        z-index: 10;
+        overflow: hidden;
+    }
+
+  
+    .ola {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-size: 100% 100px;
+        transform: translate3d(0, 0, 0);
+    }
+
+    .ola1 {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23445588" fill-opacity="0.2" d="M0,160L48,176C96,192,192,224,288,229.3C384,235,480,213,576,192C672,171,768,149,864,138.7C960,128,1056,128,1152,149.3C1248,171,1344,213,1392,234.7L1440,256L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+        animation: moverOlas 20s linear infinite;
+        z-index: 1;
+        opacity: 0.8;
+    }
+
+    .ola2 {
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23556699" fill-opacity="0.3" d="M0,96L60,112C120,128,240,160,360,170.7C480,181,600,171,720,144C840,117,960,75,1080,80C1200,85,1320,139,1380,165.3L1440,192L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path></svg>');
+        animation: moverOlas 15s linear reverse infinite;
+        z-index: 2;
+        bottom: 5px;
+        opacity: 0.5;
+    }
+
+    @keyframes moverOlas {
+        0% { background-position-x: 0; }
+        100% { background-position-x: 1440px; }
+    }
+
+    /* Niebla suave sobre el lago */
+    #niebla {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 30vh;
+        background: url('data:image/png;base64,iVBORw0KGgoAAAANSUh4ErkJggg=='); /* Simulación de textura de niebla */
+        background-repeat: repeat-x;
+        opacity: 0.3;
+        z-index: 15;
+        animation: moverNiebla 60s linear infinite;
+        filter: blur(8px);
+    }
+
+    @keyframes moverNiebla {
+        0% { background-position: 0 0; }
+        100% { background-position: 2000px 0; }
+    }
+
+ 
+    #luna {
+        position: absolute;
+        top: 10%;
+        right: 15%;
+        width: 150px;
+        height: 150px;
+        background: radial-gradient(circle at 30% 30%, #fff 0%, #e0e0e0 40%, #888 100%);
+        border-radius: 50%;
+        box-shadow: 
+            0 0 50px 10px rgba(255, 255, 255, 0.4), /* Glow interno */
+            0 0 100px 20px rgba(200, 220, 255, 0.2); /* Glow externo suave */
+        z-index: 5;
+    }
+
+    /* Cráteres sutiles de la luna */
+    #luna::after {
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            radial-gradient(circle at 40% 60%, rgba(0,0,0,0.1) 5%, transparent 10%),
+            radial-gradient(circle at 70% 40%, rgba(0,0,0,0.15) 8%, transparent 12%),
+            radial-gradient(circle at 20% 30%, rgba(0,0,0,0.05) 10%, transparent 15%);
+        border-radius: 50%;
+    }
+
+    /* Estrellas parpadeantes en el cielo */
+    .estrella {
+        position: absolute;
+        background-color: white;
+        border-radius: 50%;
+        animation: parpadeo 3s infinite;
+        z-index: 1;
+    }
+
+    @keyframes parpadeo {
+        0%, 100% { opacity: 0.2; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1); }
+    }
+
+    /* -----------------------------------------------------------
+       4. DOS CISNES ENAMORADOS (CSS ART)
+    ----------------------------------------------------------- */
+    #contenedor-cisnes {
+        position: absolute;
+        bottom: 25vh; /* Flotando sobre el lago */
+        left: 10%;
+        width: 300px;
+        height: 150px;
+        z-index: 20;
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-end;
+        animation: flotarCisnes 10s ease-in-out infinite;
+    }
+
+    @keyframes flotarCisnes {
+        0%, 100% { transform: translateY(0) translateX(0); }
+        50% { transform: translateY(-10px) translateX(15px); }
+    }
+
+    .cisne {
+        position: relative;
+        width: 100px;
+        height: 80px;
+        /* Reflejo del cisne en el agua (CSS puro) */
+        -webkit-box-reflect: below 5px linear-gradient(transparent, rgba(255,255,255,0.1));
+    }
+
+    /* Cuerpo del cisne */
+    .cisne-cuerpo {
+        position: absolute;
+        bottom: 0;
+        width: 80px;
+        height: 50px;
+        background-color: white;
+        border-radius: 50px 50px 10px 10px;
+        box-shadow: 0 0 15px rgba(255,255,255,0.5); /* Brillo mágico */
+    }
+
+    /* Cuello del cisne */
+    .cisne-cuello {
+        position: absolute;
+        bottom: 30px;
+        left: 50px;
+        width: 15px;
+        height: 70px;
+        background-color: white;
+        border-radius: 10px 10px 0 0;
+        transform: rotate(20deg);
+        transform-origin: bottom center;
+    }
+
+    /* Cabeza del cisne */
+    .cisne-cabeza {
+        position: absolute;
+        top: -15px;
+        left: -5px;
+        width: 25px;
+        height: 20px;
+        background-color: white;
+        border-radius: 50%;
+    }
+
+    /* Pico */
+    .cisne-cabeza::after {
+        content: '';
+        position: absolute;
+        top: 8px;
+        left: -10px;
+        border-left: 10px solid orange;
+        border-top: 4px solid transparent;
+        border-bottom: 4px solid transparent;
+    }
+
+    /* Ojo */
+    .cisne-cabeza::before {
+        content: '';
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        width: 3px;
+        height: 3px;
+        background-color: black;
+        border-radius: 50%;
+    }
+
+    /* Cisne derecho (girado para mirar al izquierdo) */
+    #cisne2 {
+        transform: scaleX(-1);
+    }
+
+    /* Animación de "toque" suave de cuellos (formando un corazón) */
+    #cisne1 .cisne-cuello {
+        animation: amorCisneIzquierdo 8s ease-in-out infinite;
+    }
+
+    #cisne2 .cisne-cuello {
+        animation: amorCisneDerecho 8s ease-in-out infinite;
+    }
+
+    @keyframes amorCisneIzquierdo {
+        0%, 100% { transform: rotate(20deg); }
+        50% { transform: rotate(5deg); } /* Se inclina hacia el otro */
+    }
+
+    @keyframes amorCisneDerecho {
+        0%, 100% { transform: rotate(20deg); }
+        50% { transform: rotate(5deg); } /* Se inclina hacia el otro */
+    }
+
+    /* Reflejos brillantes en el agua cerca de los cisnes */
+    #brillos-lago {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        overflow: hidden;
+    }
+
+    .brillo {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.7);
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        animation: destelloBrillo 4s infinite;
+        filter: blur(1px);
+    }
+
+    @keyframes destelloBrillo {
+        0%, 100% { opacity: 0; transform: scale(0.5); }
+        50% { opacity: 1; transform: scale(1.2); }
+    }
+
+    /* -----------------------------------------------------------
+       5. PAREJA BAILANDO EN ESTILO 8-BIT
+    ----------------------------------------------------------- */
+    #contenedor-pareja {
+        position: absolute;
+        bottom: 30vh; /* Bailando "sobre" el lago, cerca del centro */
+        left: 55%;
+        transform: translateX(-50%);
+        width: 150px;
+        height: 100px;
+        z-index: 25;
+        /* Reflejo de la pareja */
+        -webkit-box-reflect: below 2px linear-gradient(transparent, rgba(255,255,255,0.1));
+    }
+
+    /* Representación 8-bit usando box-shadow (sin imágenes externas) */
+    .pixel-art {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: transparent;
+        animation: vals8bit 4s steps(4) infinite; /* Animación rítmica */
+    }
+
+    /* MUJER 8-BIT (Vestido blanco/azul) */
+    #mujer-8bit {
+        left: 20px;
+        top: 10px;
+        color: white; /* Color base */
+        box-shadow: 
+            /* Cabeza */
+            12px 0px, 16px 0px, 20px 0px,
+            12px 4px, 16px 4px, 20px 4px,
+            /* Cuerpo/Vestido */
+            8px 8px, 12px 8px, 16px 8px, 20px 8px, 24px 8px,
+            4px 12px white, 8px 12px white, 12px 12px white, 16px 12px white, 20px 12px white, 24px 12px white, 28px 12px white,
+            4px 16px white, 8px 16px white, 12px 16px white, 16px 16px white, 20px 16px white, 24px 16px white, 28px 16px white,
+            0px 20px white, 4px 20px white, 8px 20px white, 12px 20px white, 16px 20px white, 20px 20px white, 24px 20px white, 28px 20px white, 32px 20px white,
+            0px 24px white, 4px 24px white, 8px 24px white, 12px 24px white, 16px 24px white, 20px 24px white, 24px 24px white, 28px 24px white, 32px 24px white,
+            /* Pies sutiles */
+            12px 28px #555, 20px 28px #555;
+    }
+
+    /* HOMBRE 8-BIT (Traje oscuro) */
+    #hombre-8bit {
+        right: 20px;
+        top: 10px;
+        color: #333; /* Color base traje */
+        box-shadow: 
+            /* Cabeza */
+            12px 0px, 16px 0px, 20px 0px,
+            12px 4px, 16px 4px, 20px 4px,
+            /* Cuerpo/Traje */
+            12px 8px, 16px 8px, 20px 8px,
+            12px 12px #333, 16px 12px white, 20px 12px #333, /* Camisa blanca sutil */
+            12px 16px, 16px 16px, 20px 16px,
+            12px 20px, 16px 20px, 20px 20px,
+            /* Piernas */
+            12px 24px, 20px 24px,
+            12px 28px, 20px 28px;
+    }
+
+    /* Animación de Vals 8-bit (movimiento rítmico) */
+    @keyframes vals8bit {
+        0%, 100% { transform: translate(0, 0); }
+        25% { transform: translate(10px, -5px) rotate(5deg); }
+        50% { transform: translate(0, 0) rotate(0deg); }
+        75% { transform: translate(-10px, -5px) rotate(-5deg); }
+    }
+
+    /* -----------------------------------------------------------
+       6. TEXTO ROMÁNTICO ANIMADO (SUBIDA SUAVE)
+    ----------------------------------------------------------- */
+    #contenedor-texto-romantico {
+        position: absolute;
+        top: 25%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80%;
+        text-align: center;
+        z-index: 100;
+        pointer-events: none; /* No interfiere con clics */
+    }
+
+    .frase-principal {
+        font-size: 2.5em;
+        font-style: italic;
+        text-shadow: 0 0 20px rgba(255, 200, 255, 0.8), 0 0 5px white;
+        color: #fff0f5; /* LavenderBlush - color romántico */
+        margin-bottom: 20px;
+        opacity: 0;
+        /* Animación: sube suavemente y aparece */
+        animation: subidaSuaveTexto 6s ease-out 2s forwards;
+    }
+
+    @keyframes subidaSuaveTexto {
+        0% { opacity: 0; transform: translateY(50px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    /* -----------------------------------------------------------
+       7. LETRAS SINCRO (VERSOS, CORO, PUENTE)
+    ----------------------------------------------------------- */
+    #letras-sincro {
+        font-size: 1.5em;
+        color: rgba(255, 255, 255, 0.7);
+        text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        min-height: 1.6em; /* Evita saltos de diseño si no hay texto */
+        opacity: 0;
+        animation: fadeInLento 2s ease-in 8s forwards; /* Aparece después de la frase principal */
+    }
+
+    @keyframes fadeInLento {
+        to { opacity: 1; }
+    }
+
+    .letra-activa {
+        color: white;
+        text-shadow: 0 0 15px rgba(200, 255, 255, 0.9), 0 0 5px white;
+        transition: all 0.5s ease;
+    }
+
+    /* -----------------------------------------------------------
+       8. EFECTOS ADICIONALES (PARTÍCULAS BRILLANTES, LLUVIA MÁGICA)
+    ----------------------------------------------------------- */
+    #particulas-magicas {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 200;
+        pointer-events: none;
+    }
+
+    .particula {
+        position: absolute;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 50%;
+        animation: lluviaMagica linear infinite;
+        filter: blur(1px);
+        box-shadow: 0 0 5px white;
+    }
+
+    @keyframes lluviaMagica {
+        0% { transform: translateY(-10vh) translateX(0); opacity: 0; }
+        10% { opacity: 1; }
+        90% { opacity: 1; }
+        100% { transform: translateY(100vh) translateX(50px); opacity: 0; }
+    }
+
+    /* -----------------------------------------------------------
+       9. PANTALLA DE INICIO (REQ PARA AUTO-PLAY MODERNO)
+    ----------------------------------------------------------- */
+    #pantalla-inicio {
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: radial-gradient(circle, #191970 0%, #000 100%);
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    #pantalla-inicio h1 {
+        font-size: 3em;
+        text-shadow: 0 0 20px white;
+        margin-bottom: 20px;
+    }
+
+    #pantalla-inicio p {
+        font-size: 1.5em;
+        color: #aaa;
+    }
+
+    /* Ocultar elementos principales hasta que comience */
+    #escena-principal, #audios-container {
+        display: none;
+    }
+
+</style>
+</head>
+<body>
+
+<div id="pantalla-inicio" onclick="comenzarExperiencia()">
+    <h1>Nuestra historia es un vals eterno que perdura por siempre</h1>
+    <p>Un vals eterno te espera... dale click aqui preciosa</p>
+    <p style="font-size: 1em; color: #777;">(Haz clic en cualquier lugar para comenzar)</p>
+</div>
+
+<div id="audios-container">
+    <audio id="musica-fondo" loop>
+        <source src="Canción Lago de los cisnes  Cajita musical.mp3" type="audio/mpeg">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+</div>
+
+<div id="escena-principal">
+    
+    <div id="estrellas-container"></div>
+    <div id="luna"></div>
+
+    <div id="lago">
+        <div class="ola ola1"></div>
+        <div class="ola ola2"></div>
+        <div id="niebla"></div>
+        <div id="brillos-lago"></div> </div>
+
+    <div id="contenedor-cisnes">
+        <div id="cisne1" class="cisne">
+            <div class="cisne-cuerpo"></div>
+            <div class="cisne-cuello">
+                <div class="cisne-cabeza"></div>
+            </div>
+        </div>
+        <div id="cisne2" class="cisne">
+            <div class="cisne-cuerpo"></div>
+            <div class="cisne-cuello">
+                <div class="cisne-cabeza"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="contenedor-pareja">
+        <div id="mujer-8bit" class="pixel-art"></div>
+        <div id="hombre-8bit" class="pixel-art"></div>
+    </div>
+
+    <div id="contenedor-texto-romantico">
+        <p class="frase-principal">
+            "Bajo la luna, los cisnes danzan y nuestros corazones se encuentran, recordándonos que el amor es un eterno vals en el agua."
+        </p>
+        <p id="letras-sincro"></p>
+    </div>
+
+    <div id="particulas-magicas"></div>
+
+</div>
+
+<script>
+ 
+    
+  
+    const URL_REDIRECCION = "https://www.google.com/search?q=poemas+de+amor+eterno"; 
+
+  
+    const letrasMap = [
+        [5, "El lago se ilumina, la noche es joven..."],
+        [12, "Una melodía ancestral comienza a sonar."],
+        [20, "Dos almas blancas se buscan en el agua,"],
+        [28, "sus cuellos dibujan promesas de eternidad."],
+        [35, "(El Oboe canta su melancólico amor)"], // Puente melódico
+        [45, "CORO: ¡Danzad, danzad, bajo la luz plateada!"],
+        [53, "Donde el tiempo se detiene y solo existimos nosotrxs."],
+        [61, "Nuestros pasos siguen el ritmo de sus alas,"],
+        [69, "un vals que no conoce final."],
+        [80, "(La orquesta estalla en pasión...)"], // Clímax simulado
+        [95, "El hechizo se rompe, pero el amor permanece."],
+        [105, "Volveremos a encontrarnos aquí, cada noche..."],
+        [115, "En nuestro eterno vals sobre el agua."],
+        [125, "El sueño termina... pero nuestra historia empieza."]
+    ];
+
+
+    const DURACION_CANCION_SIMULADA = 135; 
+
+  
+    
+    let audioElement = document.getElementById('musica-fondo');
+    let intervaloLetras;
+
+    function comenzarExperiencia() {
+        // Ocultar pantalla de inicio, mostrar escena
+        document.getElementById('pantalla-inicio').style.display = 'none';
+        document.getElementById('escena-principal').style.display = 'block';
+
+        // Intentar reproducir audio real
+        let playPromise = audioElement.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // El audio real está sonando, usar su tiempo
+                iniciarSincronizacionLetras(false);
+            })
+            .catch(error => {
+                console.log("Auto-play prevenido o archivo no encontrado. Simulando experiencia.");
+                // Simular el tiempo si no hay audio
+                iniciarSincronizacionLetras(true);
+            });
+        }
+    }
+
+
+    // Crear Estrellas fijas
+    const estrellasContainer = document.getElementById('estrellas-container');
+    for (let i = 0; i < 150; i++) {
+        let estrella = document.createElement('div');
+        estrella.className = 'estrella';
+        estrella.style.width = Math.random() * 3 + 'px';
+        estrella.style.height = estrella.style.width;
+        estrella.style.top = Math.random() * 60 + '%'; // Solo en el cielo
+        estrella.style.left = Math.random() * 100 + '%';
+        estrella.style.animationDelay = Math.random() * 3 + 's';
+        estrellasContainer.appendChild(estrella);
+    }
+
+    // Crear Brillos en el Lago (Reflejos dinámicos)
+    const brillosContainer = document.getElementById('brillos-lago');
+    for (let i = 0; i < 30; i++) {
+        let brillo = document.createElement('div');
+        brillo.className = 'brillo';
+        brillo.style.top = Math.random() * 100 + '%';
+        brillo.style.left = Math.random() * 100 + '%';
+        brillo.style.animationDelay = Math.random() * 4 + 's';
+        brillo.style.animationDuration = (Math.random() * 2 + 2) + 's';
+        brillosContainer.appendChild(brillo);
+    }
+
+    // Crear Partículas Mágicas (Lluvia suave)
+    const particulasContainer = document.getElementById('particulas-magicas');
+    for (let i = 0; i < 50; i++) {
+        let particula = document.createElement('div');
+        particula.className = 'particula';
+        particula.style.width = Math.random() * 5 + 2 + 'px';
+        particula.style.height = particula.style.width;
+        particula.style.left = Math.random() * 100 + '%';
+        particula.style.animationDuration = (Math.random() * 5 + 5) + 's';
+        particula.style.animationDelay = Math.random() * 10 + 's';
+        particulasContainer.appendChild(particula);
+    }
+
+ 
+    
+    function iniciarSincronizacionLetras(esSimulado) {
+        const contenedorLetras = document.getElementById('letras-sincro');
+        let indexLetra = 0;
+        let tiempoActual = 0;
+        let duracionTotal = esSimulado ? DURACION_CANCION_SIMULADA : audioElement.duration;
+
+        // Actualizar cada segundo
+        intervaloLetras = setInterval(() => {
+            if (esSimulado) {
+                tiempoActual++;
+            } else {
+                tiempoActual = audioElement.currentTime;
+            }
+
+            // Comprobar si hay una nueva letra para mostrar
+            if (indexLetra < letrasMap.length && tiempoActual >= letrasMap[indexLetra][0]) {
+                // Aplicar efecto de salida a la letra anterior
+                if (contenedorLetras.firstChild) {
+                    contenedorLetras.firstChild.classList.remove('letra-activa');
+                    contenedorLetras.firstChild.style.opacity = 0;
+                    contenedorLetras.firstChild.style.transform = 'translateY(-10px)';
+                }
+
+                // Crear y mostrar la nueva letra
+                let nuevoSpan = document.createElement('span');
+                nuevoSpan.innerText = letrasMap[indexLetra][1];
+                nuevoSpan.style.display = 'block';
+                nuevoSpan.style.transition = 'all 0.8s ease';
+                nuevoSpan.style.opacity = 0;
+                nuevoSpan.style.transform = 'translateY(10px)';
+                
+                // Limpiar contenedor y añadir
+                contenedorLetras.innerHTML = ''; 
+                contenedorLetras.appendChild(nuevoSpan);
+
+                // Forzar reflow para la animación de entrada
+                setTimeout(() => {
+                    nuevoSpan.classList.add('letra-activa');
+                    nuevoSpan.style.opacity = 1;
+                    nuevoSpan.style.transform = 'translateY(0)';
+                }, 50);
+
+                indexLetra++;
+            }
+
+    
+            if ((!esSimulado && audioElement.ended) || (esSimulado && tiempoActual >= duracionTotal)) {
+                finalizarYRedirigir();
+            }
+
+        }, 1000); // Chequeo cada segundo
+    }
+
+    function finalizarYRedirigir() {
+        clearInterval(intervaloLetras);
+        
+        // Efecto visual de fundido a negro final épico
+        let fundido = document.createElement('div');
+        fundido.style.position = 'fixed';
+        fundido.style.top = 0; fundido.style.left = 0;
+        fundido.style.width = '100%'; fundido.style.height = '100%';
+        fundido.style.background = 'black';
+        fundido.style.opacity = 0;
+        fundido.style.transition = 'opacity 3s ease';
+        fundido.style.zindex = 99999;
+        document.body.appendChild(fundido);
+
+        setTimeout(() => {
+            fundido.style.opacity = 1;
+        }, 100);
+
+     
+        setTimeout(() => {
+            window.location.href = URL_REDIRECCION;
+        }, 3500);
+    }
+
+</script>
+</body>
+</html>
