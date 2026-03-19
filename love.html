@@ -77,15 +77,21 @@
 
 <body>
 
-  <!-- MENSAJE Y BOTÓN -->
-  <div id="loveMessage">💖 Te amo Briss 💖</div>
-  <button id="nextPageBtn">Ir al siguiente capítulo</button>
+ <!-- MENSAJE Y BOTÓN -->
+<div id="loveMessage">💖 Te amo Briss 💖</div>
+<button id="nextPageBtn">Ir al siguiente capítulo</button>
 
-  <canvas id="canvas"></canvas>
+<canvas id="canvas"></canvas>
 
-  <script type="module" src="script.js"></script>
-  <script>
-    // BOTÓN DE NAVEGACIÓN
+<script type="module" src="script.js"></script>
+<script>
+  // BOTÓN DE NAVEGACIÓN
+  const nextBtn = document.getElementById('nextPageBtn');
+  nextBtn.addEventListener('click', () => {
+    // Redirige a musica.html
+    window.location.href = 'musica.html';
+  });
+</script>
     const nextBtn = document.getElementById('nextPageBtn');
     nextBtn.addEventListener('click', () => {
       window.location.href = "love.html.html"; // Cambia por tu HTML de destino
